@@ -1,7 +1,6 @@
 services:
   web:
     build: .
-    command: sh -c "bin/rails db:prepare && bin/rails server --binding 0.0.0.0"
     depends_on:
       db:
         condition: service_healthy
