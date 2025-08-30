@@ -10,28 +10,28 @@ RSpec.describe ImportJob, type: :job do
 
     let(:users) do
       [
-        { external_id: 99, name: 'Junita Jast' },
-        { external_id: 77, name: 'Mrs. Stephen Trantow' },
-        { external_id: 19, name: 'Teresa Brakus' },
-        { external_id: 52, name: 'Britt Armstrong' }
+        { id: 99, name: 'Junita Jast' },
+        { id: 77, name: 'Mrs. Stephen Trantow' },
+        { id: 19, name: 'Teresa Brakus' },
+        { id: 52, name: 'Britt Armstrong' }
       ]
     end
 
     let(:products) do
       [
-        { external_id: 4, price_cents: 87_024 },
-        { external_id: 2, price_cents: 73_857 },
-        { external_id: 3, price_cents: 184_386 },
-        { external_id: 1, price_cents: 121_307 }
+        { id: 4, price_cents: 87_024 },
+        { id: 2, price_cents: 73_857 },
+        { id: 3, price_cents: 184_386 },
+        { id: 1, price_cents: 121_307 }
       ]
     end
 
     let(:orders) do
       [
-        { external_id: 1068, user_external_id: 99, date: Date.new(2021, 11, 25) },
-        { external_id: 840, user_external_id: 77, date: Date.new(2021, 5, 21) },
-        { external_id: 192, user_external_id: 19, date: Date.new(2021, 3, 25) },
-        { external_id: 559, user_external_id: 52, date: Date.new(2021, 9, 2) }
+        { id: 1068, user_id: 99, date: Date.new(2021, 11, 25) },
+        { id: 840, user_id: 77, date: Date.new(2021, 5, 21) },
+        { id: 192, user_id: 19, date: Date.new(2021, 3, 25) },
+        { id: 559, user_id: 52, date: Date.new(2021, 9, 2) }
       ]
     end
 
@@ -71,10 +71,10 @@ RSpec.describe ImportJob, type: :job do
 
       let(:users) do
         [
-          { external_id: 99, name: 'Junita Last' },
-          { external_id: 77, name: 'Mrs. Stephen Trantow' },
-          { external_id: 19, name: 'Teresa Brakus' },
-          { external_id: 52, name: 'Britt Armstrong' }
+          { id: 99, name: 'Junita Last' },
+          { id: 77, name: 'Mrs. Stephen Trantow' },
+          { id: 19, name: 'Teresa Brakus' },
+          { id: 52, name: 'Britt Armstrong' }
         ]
       end
 
@@ -101,10 +101,10 @@ RSpec.describe ImportJob, type: :job do
 
       let(:products) do
         [
-          { external_id: 4, price_cents: 97_024 },
-          { external_id: 2, price_cents: 73_857 },
-          { external_id: 3, price_cents: 184_386 },
-          { external_id: 1, price_cents: 121_307 }
+          { id: 4, price_cents: 97_024 },
+          { id: 2, price_cents: 73_857 },
+          { id: 3, price_cents: 184_386 },
+          { id: 1, price_cents: 121_307 }
         ]
       end
 
@@ -131,10 +131,10 @@ RSpec.describe ImportJob, type: :job do
 
       let(:orders) do
         [
-          { external_id: 1068, user_external_id: 99, date: Date.new(2021, 11, 26) },
-          { external_id: 840, user_external_id: 77, date: Date.new(2021, 5, 21) },
-          { external_id: 192, user_external_id: 19, date: Date.new(2021, 3, 25) },
-          { external_id: 559, user_external_id: 52, date: Date.new(2021, 9, 2) }
+          { id: 1068, user_id: 99, date: Date.new(2021, 11, 26) },
+          { id: 840, user_id: 77, date: Date.new(2021, 5, 21) },
+          { id: 192, user_id: 19, date: Date.new(2021, 3, 25) },
+          { id: 559, user_id: 52, date: Date.new(2021, 9, 2) }
         ]
       end
 
