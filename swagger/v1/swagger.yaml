@@ -1,3 +1,64 @@
 openapi: 3.1.0
 info:
   title: Technical Challenge
+
+servers:
+  - url: http://localhost:3000/api/v1
+
+tags:
+  - name: imports
+    description: Access to order imports
+
+paths:
+  /imports:
+    post:
+      tags:
+        - imports
+      summary: Import orders
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  import_id:
+                    type: integer
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '422':
+          description: Unprocessable Content
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '415':
+          description: Unprocessable Media Type
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
