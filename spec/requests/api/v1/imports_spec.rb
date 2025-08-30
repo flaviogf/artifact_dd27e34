@@ -34,6 +34,12 @@ RSpec.describe 'Api::V1::Imports', type: :request do
       expect(import.file).to be_attached
     end
 
+    it 'enqueues the ImportJob' do
+      expect do
+        post '/api/v1/imports', params: { file: }
+      end.to change(ImportJob.jobs, :size).by(1)
+    end
+
     context 'when no file is provided' do
       it 'returns a 400 status code' do
         post '/api/v1/imports', params: {}
