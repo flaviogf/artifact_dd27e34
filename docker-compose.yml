@@ -1,22 +1,28 @@
+x-default: &default
+  build: .
+  depends_on:
+    db:
+      condition: service_healthy
+    redis:
+      condition: service_started
+  environment:
+    RAILS_ENV: development
+    DATABASE_URL: postgres://postgres:postgres@db
+    REDIS_URL: redis://redis
+  restart: always
+  stdin_open: true
+  tty: true
+  volumes:
+    - ./:/app
+
 services:
   web:
-    build: .
-    depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_started
-    environment:
-      RAILS_ENV: development
-      DATABASE_URL: postgres://postgres:postgres@db
-      REDIS_URL: redis://redis
+    <<: *default
     ports:
       - 3000:3000
-    restart: always
-    stdin_open: true
-    tty: true
-    volumes:
-      - ./:/app
+  jobs:
+    <<: *default
+    command: bundle exec sidekiq
   db:
     image: postgres:17.5
     environment:

@@ -17,6 +17,8 @@ class Api::V1::ImportsController < ApplicationController
     import = Import.create!(status: :pending)
     import.file.attach(params[:file])
 
+    ImportJob.perform_async(import.id)
+
     render json: { import_id: import.id }, status: :created
   end
 end
