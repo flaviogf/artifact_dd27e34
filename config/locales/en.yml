@@ -28,4 +28,8 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  imports:
+    errors:
+      missing_file: File is required
+      invalid_file: Invalid file
+      invalid_file_type: Invalid file type

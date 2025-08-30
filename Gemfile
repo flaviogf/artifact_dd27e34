@@ -35,6 +35,10 @@ gem 'ostruct', '~> 0.6.3'
 gem 'rswag-api', '~> 2.16.0'
 gem 'rswag-ui', '~> 2.16.0'
 
+group :test do
+  gem 'shoulda-matchers', '~> 6.0'
+end
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri windows], require: 'debug/prelude'

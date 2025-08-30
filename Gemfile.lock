@@ -223,6 +223,8 @@ GEM
       actionpack (>= 5.2, < 8.1)
       railties (>= 5.2, < 8.1)
     securerandom (0.4.1)
+    shoulda-matchers (6.5.0)
+      activesupport (>= 5.2.0)
     stringio (3.1.7)
     thor (1.4.0)
     thruster (0.1.15)
@@ -264,6 +266,7 @@ DEPENDENCIES
   rspec-rails (~> 8.0.0)
   rswag-api (~> 2.16.0)
   rswag-ui (~> 2.16.0)
+  shoulda-matchers (~> 6.0)
   thruster
   tzinfo-data
 
