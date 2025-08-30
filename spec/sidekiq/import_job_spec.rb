@@ -18,8 +18,10 @@ RSpec.describe ImportJob, type: :job do
     end
 
     before do
-      file = fixture_file_upload(Rails.root.join('spec/fixtures/files/data_1.txt'), 'text/plain')
-      import.file.attach(file)
+      import.file.attach(
+        io: File.open(Rails.root.join('spec/fixtures/files/data_1.txt')),
+        filename: 'data_1.txt'
+      )
     end
 
     it 'imports the users' do
@@ -43,8 +45,10 @@ RSpec.describe ImportJob, type: :job do
       end
 
       before do
-        file = fixture_file_upload(Rails.root.join('spec/fixtures/files/data_2.txt'), 'text/plain')
-        import_with_imported_users.file.attach(file)
+        import_with_imported_users.file.attach(
+          io: File.open(Rails.root.join('spec/fixtures/files/data_2.txt')),
+          filename: 'data_2.txt'
+        )
 
         job.perform(import.id)
       end
