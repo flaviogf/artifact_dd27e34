@@ -17,6 +17,15 @@ RSpec.describe ImportJob, type: :job do
       ]
     end
 
+    let(:products) do
+      [
+        { external_id: 4, price_cents: 87_024 },
+        { external_id: 2, price_cents: 73_857 },
+        { external_id: 3, price_cents: 184_386 },
+        { external_id: 1, price_cents: 121_307 }
+      ]
+    end
+
     before do
       import.file.attach(
         io: File.open(Rails.root.join('spec/fixtures/files/data_1.txt')),
@@ -30,6 +39,14 @@ RSpec.describe ImportJob, type: :job do
       expected_users = users.collect { |attrs| have_attributes(attrs) }
 
       expect(User.all).to match_array(expected_users)
+    end
+
+    it 'imports the products' do
+      job.perform(import.id)
+
+      expected_products = products.collect { |attrs| have_attributes(attrs) }
+
+      expect(Product.all).to match_array(expected_products)
     end
 
     context 'when the file contains users that have already been imported' do
@@ -62,11 +79,47 @@ RSpec.describe ImportJob, type: :job do
       end
     end
 
+    context 'when the file contains products that have already been imported' do
+      let(:import_with_imported_products) { create(:import) }
+
+      let(:products) do
+        [
+          { external_id: 4, price_cents: 97_024 },
+          { external_id: 2, price_cents: 73_857 },
+          { external_id: 3, price_cents: 184_386 },
+          { external_id: 1, price_cents: 121_307 }
+        ]
+      end
+
+      before do
+        import_with_imported_products.file.attach(
+          io: File.open(Rails.root.join('spec/fixtures/files/data_2.txt')),
+          filename: 'data_2.txt'
+        )
+
+        job.perform(import.id)
+      end
+
+      it 'updates the existing products' do
+        job.perform(import_with_imported_products.id)
+
+        expected_products = products.collect { |attrs| have_attributes(attrs) }
+
+        expect(Product.all).to match_array(expected_products)
+      end
+    end
+
     context "when the import doesn't exist" do
       it "doesn't import any user" do
-        job.perform(0)
+        expect do
+          job.perform(0)
+        end.to_not change(User, :count)
+      end
 
-        expect(User.count).to eq(0)
+      it "doesn't import any product" do
+        expect do
+          job.perform(0)
+        end.to_not change(Product, :count)
       end
     end
 
@@ -74,9 +127,15 @@ RSpec.describe ImportJob, type: :job do
       let(:import_without_file) { create(:import) }
 
       it "doesn't import any user" do
-        job.perform(import_without_file.id)
+        expect do
+          job.perform(0)
+        end.to_not change(User, :count)
+      end
 
-        expect(User.count).to eq(0)
+      it "doesn't import any product" do
+        expect do
+          job.perform(0)
+        end.to_not change(Product, :count)
       end
     end
   end
