@@ -139,6 +139,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.9-x86_64-linux-musl)
       racc (~> 1.4)
+    ostruct (0.6.3)
     pg (1.6.1)
     pg (1.6.1-aarch64-linux)
     pg (1.6.1-aarch64-linux-musl)
@@ -215,6 +216,12 @@ GEM
       rspec-mocks (~> 3.13)
       rspec-support (~> 3.13)
     rspec-support (3.13.5)
+    rswag-api (2.16.0)
+      activesupport (>= 5.2, < 8.1)
+      railties (>= 5.2, < 8.1)
+    rswag-ui (2.16.0)
+      actionpack (>= 5.2, < 8.1)
+      railties (>= 5.2, < 8.1)
     securerandom (0.4.1)
     stringio (3.1.7)
     thor (1.4.0)
@@ -250,10 +257,13 @@ DEPENDENCIES
   bootsnap
   brakeman
   debug
+  ostruct (~> 0.6.3)
   pg (~> 1.1)
   puma (>= 5.0)
   rails (~> 8.0.2, >= 8.0.2.1)
   rspec-rails (~> 8.0.0)
+  rswag-api (~> 2.16.0)
+  rswag-ui (~> 2.16.0)
   thruster
   tzinfo-data
 
