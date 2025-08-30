@@ -19,8 +19,8 @@ class ImportJob
         users[user_id] = { external_id: user_id, name: user_name }
 
         product_id = line[65...75].to_i
-        product_name = line[75...87].strip.gsub(/\./, '').to_i
-        products[product_id] = { external_id: product_id, price_cents: product_name }
+        product_price_cents = line[75...87].strip.gsub(/\./, '').to_i
+        products[product_id] = { external_id: product_id, price_cents: product_price_cents }
       end
     end
 
