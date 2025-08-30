@@ -34,6 +34,7 @@ gem 'thruster', require: false
 gem 'ostruct', '~> 0.6.3'
 gem 'rswag-api', '~> 2.16.0'
 gem 'rswag-ui', '~> 2.16.0'
+gem 'sidekiq', '~> 8.0.0'
 
 group :test do
   gem 'shoulda-matchers', '~> 6.0'
