@@ -8,18 +8,18 @@ RSpec.describe 'Api::V1::Imports', type: :request do
 
     it 'creates a new import' do
       expect do
-        post '/api/v1/imports', params: { file: file }
+        post '/api/v1/imports', params: { file: }
       end.to change(Import, :count).by(1)
     end
 
     it 'returns a 201 status code' do
-      post '/api/v1/imports', params: { file: file }
+      post '/api/v1/imports', params: { file: }
 
       expect(response).to have_http_status(:created)
     end
 
     it 'returns the import ID in the response' do
-      post '/api/v1/imports', params: { file: file }
+      post '/api/v1/imports', params: { file: }
 
       import_id = response.parsed_body['import_id']
 
@@ -27,7 +27,7 @@ RSpec.describe 'Api::V1::Imports', type: :request do
     end
 
     it 'attaches the uploaded file to the import' do
-      post '/api/v1/imports', params: { file: file }
+      post '/api/v1/imports', params: { file: }
 
       import = Import.find(response.parsed_body['import_id'])
 
