@@ -1,0 +1,32 @@
+services:
+  web:
+    build: .
+    command: sh -c "bin/rails db:prepare && bin/rails server --binding 0.0.0.0"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: postgres://postgres:postgres@db
+    ports:
+      - 3000:3000
+    restart: always
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./:/app
+  db:
+    image: postgres:17.5
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready'"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  db-data:
