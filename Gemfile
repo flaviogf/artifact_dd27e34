@@ -37,7 +37,7 @@ gem 'rswag-ui', '~> 2.16.0'
 gem 'sidekiq', '~> 8.0.0'
 
 group :test do
-  gem 'shoulda-matchers', '~> 6.0'
+  gem 'shoulda-matchers', '~> 6.5.0'
 end
 
 group :development, :test do
@@ -47,5 +47,6 @@ group :development, :test do
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem 'brakeman', require: false
 
+  gem 'factory_bot_rails', '~> 6.5.0'
   gem 'rspec-rails', '~> 8.0.0'
 end

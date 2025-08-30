@@ -91,6 +91,11 @@ GEM
     drb (2.2.3)
     erb (5.0.2)
     erubi (1.13.1)
+    factory_bot (6.5.5)
+      activesupport (>= 6.1.0)
+    factory_bot_rails (6.5.0)
+      factory_bot (~> 6.5)
+      railties (>= 6.1.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.7)
@@ -268,6 +273,7 @@ DEPENDENCIES
   bootsnap
   brakeman
   debug
+  factory_bot_rails (~> 6.5.0)
   ostruct (~> 0.6.3)
   pg (~> 1.1)
   puma (>= 5.0)
@@ -275,7 +281,7 @@ DEPENDENCIES
   rspec-rails (~> 8.0.0)
   rswag-api (~> 2.16.0)
   rswag-ui (~> 2.16.0)
-  shoulda-matchers (~> 6.0)
+  shoulda-matchers (~> 6.5.0)
   sidekiq (~> 8.0.0)
   thruster
   tzinfo-data
