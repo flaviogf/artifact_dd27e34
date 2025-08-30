@@ -26,6 +26,15 @@ RSpec.describe ImportJob, type: :job do
       ]
     end
 
+    let(:orders) do
+      [
+        { external_id: 1068, user_external_id: 99, date: Date.new(2021, 11, 25) },
+        { external_id: 840, user_external_id: 77, date: Date.new(2021, 5, 21) },
+        { external_id: 192, user_external_id: 19, date: Date.new(2021, 3, 25) },
+        { external_id: 559, user_external_id: 52, date: Date.new(2021, 9, 2) }
+      ]
+    end
+
     before do
       import.file.attach(
         io: File.open(Rails.root.join('spec/fixtures/files/data_1.txt')),
@@ -47,6 +56,14 @@ RSpec.describe ImportJob, type: :job do
       expected_products = products.collect { |attrs| have_attributes(attrs) }
 
       expect(Product.all).to match_array(expected_products)
+    end
+
+    it 'imports the orders' do
+      job.perform(import.id)
+
+      expected_orders = orders.collect { |attrs| have_attributes(attrs) }
+
+      expect(Order.all).to match_array(expected_orders)
     end
 
     context 'when the file contains users that have already been imported' do
@@ -109,6 +126,36 @@ RSpec.describe ImportJob, type: :job do
       end
     end
 
+    context 'when the file contains orders that have already been imported' do
+      let(:import_with_imported_orders) { create(:import) }
+
+      let(:orders) do
+        [
+          { external_id: 1068, user_external_id: 99, date: Date.new(2021, 11, 26) },
+          { external_id: 840, user_external_id: 77, date: Date.new(2021, 5, 21) },
+          { external_id: 192, user_external_id: 19, date: Date.new(2021, 3, 25) },
+          { external_id: 559, user_external_id: 52, date: Date.new(2021, 9, 2) }
+        ]
+      end
+
+      before do
+        import_with_imported_orders.file.attach(
+          io: File.open(Rails.root.join('spec/fixtures/files/data_2.txt')),
+          filename: 'data_2.txt'
+        )
+
+        job.perform(import.id)
+      end
+
+      it 'updates the existing orders' do
+        job.perform(import_with_imported_orders.id)
+
+        expected_orders = orders.collect { |attrs| have_attributes(attrs) }
+
+        expect(Order.all).to match_array(expected_orders)
+      end
+    end
+
     context "when the import doesn't exist" do
       it "doesn't import any user" do
         expect do
@@ -120,6 +167,12 @@ RSpec.describe ImportJob, type: :job do
         expect do
           job.perform(0)
         end.to_not change(Product, :count)
+      end
+
+      it "doesn't import any order" do
+        expect do
+          job.perform(0)
+        end.to_not change(Order, :count)
       end
     end
 
@@ -136,6 +189,12 @@ RSpec.describe ImportJob, type: :job do
         expect do
           job.perform(0)
         end.to_not change(Product, :count)
+      end
+
+      it "doesn't import any order" do
+        expect do
+          job.perform(0)
+        end.to_not change(Order, :count)
       end
     end
   end
