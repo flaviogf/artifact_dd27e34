@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class Api::V1::ImportsController < ApplicationController
-  def create
+class Api::V1::OrdersController < ApplicationController
+  def upload
     unless params[:file].present?
       return render json: { error: I18n.t('imports.errors.missing_file') }, status: :bad_request
     end

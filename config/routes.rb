@@ -16,7 +16,9 @@ Rails.application.routes.draw do
   # root "posts#index"
   namespace :api do
     namespace :v1 do
-      resources :imports, only: %i[create]
+      resources :orders do
+        post :upload, on: :collection
+      end
     end
   end
 end
