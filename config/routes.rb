@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       resources :imports, only: %i[index create]
       resources :orders, only: %i[index]
       resources :products, only: %i[index]
+      resources :users, only: %i[index]
     end
   end
 end

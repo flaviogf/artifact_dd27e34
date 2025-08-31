@@ -12,6 +12,8 @@ tags:
     description: Access to the orders
   - name: products
     description: Access to the products
+  - name: users
+    description: Access to the users
 
 paths:
   /imports:
@@ -177,6 +179,43 @@ paths:
                     product_id:
                       type: integer
                     value:
+                      type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /users:
+    get:
+      tags:
+        - users
+      summary: List users
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: per_page
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    user_id:
+                      type: integer
+                    name:
                       type: string
         '400':
           description: Bad Request

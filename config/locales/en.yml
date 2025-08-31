@@ -35,11 +35,15 @@ en:
       invalid_file_type: Invalid file type
       invalid_page: Invalid page
       invalid_per_page: Invalid per_page
+  orders:
+    errors:
+      invalid_page: Invalid page
+      invalid_per_page: Invalid per_page
   products:
     errors:
       invalid_page: Invalid page
       invalid_per_page: Invalid per_page
-  orders:
+  users:
     errors:
       invalid_page: Invalid page
       invalid_per_page: Invalid per_page
