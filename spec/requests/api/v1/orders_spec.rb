@@ -44,6 +44,58 @@ RSpec.describe 'Api::V1::Orders', type: :request do
       end
     end
 
+    context 'with start_date' do
+      let(:start_date) { 10.days.ago.to_date }
+
+      before do
+        orders[0...40].each { |order| order.update(date: 20.days.ago.to_date) }
+        orders[40...].each { |order| order.update(date: 5.days.ago.to_date) }
+      end
+
+      it 'returns a list of orders from the specified start_date' do
+        get '/api/v1/orders', params: { start_date: }
+
+        expected_orders = build_expected_orders(orders[40...], order_items).first(25)
+
+        expect(response.parsed_body).to match_array(expected_orders)
+      end
+    end
+
+    context 'with end_date' do
+      let(:end_date) { Time.current.to_date }
+
+      before do
+        orders[0...40].each { |order| order.update(date: 20.days.from_now.to_date) }
+        orders[40...].each { |order| order.update(date: 5.days.ago.to_date) }
+      end
+
+      it 'returns a list of orders up to the specified end_date' do
+        get '/api/v1/orders', params: { end_date: }
+
+        expected_orders = build_expected_orders(orders[40...], order_items).first(25)
+
+        expect(response.parsed_body).to match_array(expected_orders)
+      end
+    end
+
+    context 'when start_date is after end_date' do
+      let(:start_date) { 10.days.from_now.to_date }
+
+      let(:end_date) { Time.current.to_date }
+
+      it 'returns a 400 status code' do
+        get '/api/v1/orders', params: { start_date:, end_date: }
+
+        expect(response).to have_http_status(:bad_request)
+      end
+
+      it 'returns an error message' do
+        get '/api/v1/orders', params: { start_date:, end_date: }
+
+        expect(response.parsed_body['error']).to eq('Invalid date range')
+      end
+    end
+
     context 'with invalid page' do
       it 'returns a 400 status code' do
         get '/api/v1/orders', params: { page: 'invalid' }
