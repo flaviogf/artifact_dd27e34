@@ -16,7 +16,7 @@ module Orders
 
           users[user_id] = { id: user_id, name: user_name }
           products[product_id] = { id: product_id, price_cents: product_price_cents }
-          orders[order_id] = { id: order_id, user_id: user_id, date: order_date }
+          orders[order_id] = { id: order_id, user_id:, date: order_date }
           order_items[order_items_id] = { order_id:, product_id:, price_cents: product_price_cents }
         end
 
