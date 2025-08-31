@@ -24,6 +24,17 @@ services:
   jobs:
     <<: *default
     command: bundle exec sidekiq
+  test:
+    <<: *default
+    command: bundle exec rspec -fd
+    environment:
+      RAILS_ENV: test
+      DATABASE_URL: postgres://postgres:postgres@db
+      DATABASE_REPLICA_URL: postgres://postgres:postgres@db
+      REDIS_URL: redis://redis
+    restart: no
+    profiles:
+      - tools
   db:
     image: postgres:17.5
     environment:
