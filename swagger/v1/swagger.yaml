@@ -91,3 +91,12 @@ paths:
                   value:
                     type: number
                     format: double
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
