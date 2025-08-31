@@ -6,7 +6,7 @@ class ImportJob
   sidekiq_options queue: :imports, retry: 5
 
   sidekiq_retries_exhausted do |job, _ex|
-    import = Import.find_by(id: job['args'].first)
+    import = Import.find_by(id: job['args'][0])
     next if import.blank?
 
     import.failed!
