@@ -24,6 +24,10 @@ Receber um arquivo desnormalizado via **API REST**, processá-lo e disponibiliza
 - **Containerização**: [Docker 28.3.3](https://www.docker.com/)
 - **Orquestração de containers**: [Docker Compose 2.39.2](https://docs.docker.com/compose/)
 
+## 🎬 Demonstração da API
+
+![API funcionando](https://github.com/user-attachments/assets/09896560-bbd7-4b74-b3ca-c29b7de727ce)
+
 ## ⚙️ Como Rodar o Projeto
 
 ### 1. Clone o repositório
