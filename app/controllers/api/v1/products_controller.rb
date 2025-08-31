@@ -24,7 +24,7 @@ module Api
             .order(:id)
             .page(page)
             .per(per_page)
-            .collect { |p| { product_id: p.product_id, value: p.value } }
+            .as_json(except: %i[id])
         end
 
         render json: products
