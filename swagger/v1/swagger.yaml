@@ -149,6 +149,16 @@ paths:
           name: per_page
           schema:
             type: integer
+        - in: query
+          name: start_date
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: end_date
+          schema:
+            type: string
+            format: date
       responses:
         '200':
           description: OK
