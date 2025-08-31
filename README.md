@@ -46,6 +46,7 @@ docker compose up -d
 A aplicação estará disponível em:
 
 http://localhost:3000/api-docs
+
 http://localhost:3000/sidekiq
 
 ## 🧪 Rodando os Testes
