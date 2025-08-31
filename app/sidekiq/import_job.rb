@@ -29,11 +29,7 @@ class ImportJob
 
         order_items_id = "#{order_id}-#{product_id}-#{product_price_cents}"
 
-        order_items[order_items_id] = {
-          order_id: order_id,
-          product_id: product_id,
-          price_cents: product_price_cents
-        }
+        order_items[order_items_id] = { order_id:, product_id:, price_cents: product_price_cents }
       end
     end
 
