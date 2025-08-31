@@ -15,12 +15,14 @@ module Api
           return render json: { error: I18n.t('users.errors.invalid_per_page') }, status: :bad_request
         end
 
-        users = User
-                .select('id AS user_id', 'name')
-                .order(:id)
-                .page(page)
-                .per(per_page)
-                .collect { |u| { user_id: u.user_id, name: u.name } }
+        users = ActiveRecord::Base.connected_to(role: :reading) do
+          User
+            .select('id AS user_id', 'name')
+            .order(:id)
+            .page(page)
+            .per(per_page)
+            .collect { |u| { user_id: u.user_id, name: u.name } }
+        end
 
         render json: users
       end
