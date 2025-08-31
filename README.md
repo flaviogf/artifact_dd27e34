@@ -71,3 +71,14 @@ docker compose build
 ```bash
 docker compose run --rm test
 ```
+
+## ✨ Destaques da Implementação
+
+- ⚡ **Processamento Assíncrono**:  
+  O processamento do arquivo de importação é feito de forma **assíncrona** para evitar gargalos e manter as chamadas para a API mais rápidas e responsivas.
+
+- 🔄 **Job Idempotente**:  
+  O job responsável por processar os arquivos é **idempotente** — ou seja, é seguro importar o **mesmo arquivo** mais de uma vez, sem risco de **duplicar dados**.
+
+- 🚀 **Listagem Otimizada**:  
+  A consulta de pedidos (`orders`) foi **otimizada** com a criação de **[dois índices](https://github.com/flaviogf/artifact_dd27e34/pull/18)** específicos no banco de dados, garantindo melhor performance mesmo com grandes volumes de dados.
