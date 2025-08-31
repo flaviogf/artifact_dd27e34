@@ -1,6 +1,6 @@
 [![Coverage Status](https://coveralls.io/repos/github/flaviogf/artifact_dd27e34/badge.svg?branch=main)](https://coveralls.io/github/flaviogf/artifact_dd27e34?branch=main)
 
-# 📦 artifact_dd27e34
+# 📦 Technical Challenge
 
 Sistema desenvolvido para processar arquivos de pedidos do sistema legado, normalizar os dados e disponibilizá-los via **API REST** com suporte a filtros.
 
