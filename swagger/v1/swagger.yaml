@@ -104,6 +104,37 @@ paths:
                 properties:
                   error:
                     type: string
+  /imports/{id}:
+    get:
+      tags:
+        - imports
+      summary: Get import by id
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  import_id:
+                    type: integer
+                  status:
+                    type: string
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
   /orders:
     get:
       tags:

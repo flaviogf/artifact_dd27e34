@@ -47,6 +47,12 @@ module Api
 
         render json: { import_id: import.id }, status: :created
       end
+
+      def show
+        import = Import.find(params[:id])
+
+        render json: { import_id: import.id, status: import.status }
+      end
     end
   end
 end
