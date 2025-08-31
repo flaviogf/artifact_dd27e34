@@ -21,10 +21,9 @@ module Api
             .order(:created_at)
             .page(page)
             .per(per_page)
-            .collect { |i| { import_id: i.import_id, status: i.status } }
         end
 
-        render json: imports
+        render json: imports.as_json(except: %i[id])
       end
 
       def create
