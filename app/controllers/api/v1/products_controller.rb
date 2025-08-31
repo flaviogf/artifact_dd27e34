@@ -15,8 +15,8 @@ class Api::V1::ProductsController < ApplicationController
 
     products = ActiveRecord::Base.connected_to(role: :reading) do
       Product.order(:id)
-             .page(params[:page])
-             .per(params[:per_page])
+             .page(page)
+             .per(per_page)
              .pluck(Arel.sql('id AS product_id'), Arel.sql('price_cents / 100.0 AS value'))
              .collect { |product_id, value| { product_id:, value: } }
     end
