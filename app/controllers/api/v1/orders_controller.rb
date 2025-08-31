@@ -20,13 +20,19 @@ module Api
             .select(
               'orders.id AS order_id',
               'orders.date AS date',
-              "to_char(SUM(order_items.price_cents) / 100.0, 'FM999999999.00') AS total",
               <<~SQL.squish
-                json_agg(
-                  json_build_object(
-                    'product_id', order_items.product_id,
-                    'value', to_char(order_items.price_cents / 100.0, 'FM999999999.00')
-                  )
+                COALESCE(
+                  to_char(SUM(order_items.price_cents) / 100.0, 'FM999999999.00'),
+                  '0.00'
+                ) AS total,
+                COALESCE(
+                  json_agg(
+                    json_build_object(
+                      'product_id', order_items.product_id,
+                      'value', to_char(order_items.price_cents / 100.0, 'FM999999999.00')
+                    )
+                  ) FILTER (WHERE order_items.product_id IS NOT NULL),
+                  '[]'
                 ) AS products
               SQL
             )
