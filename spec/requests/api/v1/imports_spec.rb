@@ -157,4 +157,30 @@ RSpec.describe 'Api::V1::Imports', type: :request do
       end
     end
   end
+
+  describe 'GET /show' do
+    let(:import) { create(:import) }
+
+    it 'returns a 200 status code' do
+      get "/api/v1/imports/#{import.id}"
+
+      expect(response).to have_http_status(:ok)
+    end
+
+    it 'returns the import' do
+      get "/api/v1/imports/#{import.id}"
+
+      expected_import = { 'import_id' => import.id, 'status' => import.status }
+
+      expect(response.parsed_body).to match(expected_import)
+    end
+
+    context 'when the import does not exist' do
+      it 'returns a 404 status code' do
+        get '/api/v1/imports/x'
+
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+  end
 end

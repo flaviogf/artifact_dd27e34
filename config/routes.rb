@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   # root "posts#index"
   namespace :api do
     namespace :v1 do
-      resources :imports, only: %i[index create]
+      resources :imports, only: %i[index create show]
       resources :orders, only: %i[index]
       resources :products, only: %i[index]
       resources :users, only: %i[index]
