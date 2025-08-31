@@ -8,6 +8,7 @@ x-default: &default
   environment:
     RAILS_ENV: development
     DATABASE_URL: postgres://postgres:postgres@db
+    DATABASE_REPLICA_URL: postgres://postgres:postgres@db
     REDIS_URL: redis://redis
   restart: always
   stdin_open: true
