@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Api::V1::Products', type: :request do
   before { create_list(:product, 50) }
 
-  describe 'GET /index', :f do
+  describe 'GET /index' do
     it 'returns a list of products' do
       get '/api/v1/products'
 
