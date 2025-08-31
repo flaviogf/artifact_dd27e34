@@ -21,9 +21,10 @@ module Api
             .order(:created_at)
             .page(page)
             .per(per_page)
+            .as_json(except: %i[id])
         end
 
-        render json: imports.as_json(except: %i[id])
+        render json: imports
       end
 
       def create

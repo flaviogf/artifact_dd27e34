@@ -35,9 +35,10 @@ module Api
             .order(:id)
             .page(page)
             .per(per_page)
+            .as_json(except: %i[id])
         end
 
-        render json: orders.as_json(except: %i[id])
+        render json: orders
       end
     end
   end

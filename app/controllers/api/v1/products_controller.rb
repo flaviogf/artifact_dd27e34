@@ -24,9 +24,10 @@ module Api
             .order(:id)
             .page(page)
             .per(per_page)
+            .as_json(except: %i[id])
         end
 
-        render json: products.as_json(except: %i[id])
+        render json: products
       end
     end
   end
