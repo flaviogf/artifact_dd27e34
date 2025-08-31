@@ -39,3 +39,7 @@ en:
     errors:
       invalid_page: Invalid page
       invalid_per_page: Invalid per_page
+  orders:
+    errors:
+      invalid_page: Invalid page
+      invalid_per_page: Invalid per_page

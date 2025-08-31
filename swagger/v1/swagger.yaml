@@ -8,6 +8,8 @@ servers:
 tags:
   - name: imports
     description: Access to the imports
+  - name: orders
+    description: Access to the orders
   - name: products
     description: Access to the products
 
@@ -100,6 +102,54 @@ paths:
                 properties:
                   error:
                     type: string
+  /orders:
+    get:
+      tags:
+        - orders
+      summary: List orders
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: per_page
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    order_id:
+                      type: integer
+                    date:
+                      type: date
+                    total:
+                      type: string
+                    products:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          product_id:
+                            type: integer
+                          value:
+                            type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
   /products:
     get:
       tags:
@@ -127,8 +177,7 @@ paths:
                     product_id:
                       type: integer
                     value:
-                      type: number
-                      format: double
+                      type: string
         '400':
           description: Bad Request
           content:
