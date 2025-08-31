@@ -22,13 +22,11 @@ class ImportJob
         product_id = line[65...75].to_i
         product_price_cents = line[75...87].strip.gsub(/\./, '').to_i
         order_date = Date.strptime(line[87...95], '%Y%m%d')
+        order_items_id = "#{order_id}-#{product_id}-#{product_price_cents}"
 
         users[user_id] = { id: user_id, name: user_name }
         products[product_id] = { id: product_id, price_cents: product_price_cents }
         orders[order_id] = { id: order_id, user_id: user_id, date: order_date }
-
-        order_items_id = "#{order_id}-#{product_id}-#{product_price_cents}"
-
         order_items[order_items_id] = { order_id:, product_id:, price_cents: product_price_cents }
       end
     end
