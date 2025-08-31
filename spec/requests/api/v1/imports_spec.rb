@@ -3,6 +3,85 @@
 require 'rails_helper'
 
 RSpec.describe 'Api::V1::Imports', type: :request do
+  describe 'GET /index', :f do
+    before { create_list(:import, 50) }
+
+    it 'returns a list of imports' do
+      get '/api/v1/imports'
+
+      expected_imports = Import
+                         .order(:created_at)
+                         .page(1)
+                         .per(25)
+                         .pluck(Arel.sql('id AS import_id'), :status)
+                         .collect { |import_id, status| { 'import_id' => import_id, 'status' => status } }
+
+      expect(response.parsed_body).to match_array(expected_imports)
+    end
+
+    context 'with page' do
+      let(:page) { 2 }
+
+      it 'returns a list of imports for the specified page' do
+        get '/api/v1/imports', params: { page: }
+
+        expected_imports = Import
+                           .order(:created_at)
+                           .page(page)
+                           .per(25)
+                           .pluck(Arel.sql('id AS import_id'), :status)
+                           .collect { |import_id, status| { 'import_id' => import_id, 'status' => status } }
+
+        expect(response.parsed_body).to match_array(expected_imports)
+      end
+    end
+
+    context 'with per_page' do
+      let(:per_page) { 10 }
+
+      it 'returns a list of imports with the specified per_page' do
+        get '/api/v1/imports', params: { per_page: }
+
+        expected_imports = Import
+                           .order(:created_at)
+                           .page(1)
+                           .per(per_page)
+                           .pluck(Arel.sql('id AS import_id'), :status)
+                           .collect { |import_id, status| { 'import_id' => import_id, 'status' => status } }
+
+        expect(response.parsed_body).to match_array(expected_imports)
+      end
+    end
+
+    context 'with invalid page' do
+      it 'returns a 400 status code' do
+        get '/api/v1/imports', params: { page: 'invalid' }
+
+        expect(response).to have_http_status(:bad_request)
+      end
+
+      it 'returns an error message' do
+        get '/api/v1/imports', params: { page: 'invalid' }
+
+        expect(response.parsed_body['error']).to eq('Invalid page')
+      end
+    end
+
+    context 'with invalid per_page' do
+      it 'returns a 400 status code' do
+        get '/api/v1/imports', params: { per_page: 'invalid' }
+
+        expect(response).to have_http_status(:bad_request)
+      end
+
+      it 'returns an error message' do
+        get '/api/v1/imports', params: { per_page: 'invalid' }
+
+        expect(response.parsed_body['error']).to eq('Invalid per_page')
+      end
+    end
+  end
+
   describe 'POST /create' do
     let(:file) { fixture_file_upload(Rails.root.join('spec/fixtures/files/data_1.txt'), 'text/plain') }
 

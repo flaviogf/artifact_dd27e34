@@ -1,6 +1,28 @@
 # frozen_string_literal: true
 
 class Api::V1::ImportsController < ApplicationController
+  def index
+    page = params[:page]
+    per_page = params[:per_page]
+
+    if page.present? && page.to_i <= 0
+      return render json: { error: I18n.t('imports.errors.invalid_page') }, status: :bad_request
+    end
+
+    if per_page.present? && per_page.to_i <= 0
+      return render json: { error: I18n.t('imports.errors.invalid_per_page') }, status: :bad_request
+    end
+
+    imports = Import
+              .order(:created_at)
+              .page(page)
+              .per(params[:per_page])
+              .pluck(Arel.sql('id AS import_id'), :status)
+              .collect { |import_id, status| { import_id:, status: } }
+
+    render json: imports
+  end
+
   def create
     unless params[:file].present?
       return render json: { error: I18n.t('imports.errors.missing_file') }, status: :bad_request

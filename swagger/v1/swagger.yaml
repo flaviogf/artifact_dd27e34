@@ -64,6 +64,42 @@ paths:
                 properties:
                   error:
                     type: string
+    get:
+      tags:
+        - imports
+      summary: List imports
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: per_page
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    import_id:
+                      type: integer
+                    status:
+                      type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
   /products:
     get:
       tags:
@@ -84,13 +120,15 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  product_id:
-                    type: integer
-                  value:
-                    type: number
-                    format: double
+                type: array
+                items:
+                  type: object
+                  properties:
+                    product_id:
+                      type: integer
+                    value:
+                      type: number
+                      format: double
         '400':
           description: Bad Request
           content:
