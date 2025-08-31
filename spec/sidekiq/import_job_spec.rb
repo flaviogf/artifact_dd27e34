@@ -10,28 +10,39 @@ RSpec.describe ImportJob, type: :job do
 
     let(:users) do
       [
-        { external_id: 99, name: 'Junita Jast' },
-        { external_id: 77, name: 'Mrs. Stephen Trantow' },
-        { external_id: 19, name: 'Teresa Brakus' },
-        { external_id: 52, name: 'Britt Armstrong' }
+        { id: 99, name: 'Junita Jast' },
+        { id: 77, name: 'Mrs. Stephen Trantow' },
+        { id: 19, name: 'Teresa Brakus' },
+        { id: 52, name: 'Britt Armstrong' }
       ]
     end
 
     let(:products) do
       [
-        { external_id: 4, price_cents: 87_024 },
-        { external_id: 2, price_cents: 73_857 },
-        { external_id: 3, price_cents: 184_386 },
-        { external_id: 1, price_cents: 121_307 }
+        { id: 4, price_cents: 87_024 },
+        { id: 2, price_cents: 73_857 },
+        { id: 3, price_cents: 184_386 },
+        { id: 1, price_cents: 121_307 }
       ]
     end
 
     let(:orders) do
       [
-        { external_id: 1068, user_external_id: 99, date: Date.new(2021, 11, 25) },
-        { external_id: 840, user_external_id: 77, date: Date.new(2021, 5, 21) },
-        { external_id: 192, user_external_id: 19, date: Date.new(2021, 3, 25) },
-        { external_id: 559, user_external_id: 52, date: Date.new(2021, 9, 2) }
+        { id: 1068, user_id: 99, date: Date.new(2021, 11, 25) },
+        { id: 840, user_id: 77, date: Date.new(2021, 5, 21) },
+        { id: 192, user_id: 19, date: Date.new(2021, 3, 25) },
+        { id: 559, user_id: 52, date: Date.new(2021, 9, 2) }
+      ]
+    end
+
+    let(:order_items) do
+      [
+        { order_id: 1068, product_id: 4, price_cents: 87_024 },
+        { order_id: 1068, product_id: 2, price_cents: 73_857 },
+        { order_id: 1068, product_id: 2, price_cents: 73_957 },
+        { order_id: 840, product_id: 2, price_cents: 73_857 },
+        { order_id: 192, product_id: 3, price_cents: 184_386 },
+        { order_id: 559, product_id: 1, price_cents: 121_307 }
       ]
     end
 
@@ -66,15 +77,23 @@ RSpec.describe ImportJob, type: :job do
       expect(Order.all).to match_array(expected_orders)
     end
 
+    it 'imports the order items' do
+      job.perform(import.id)
+
+      expected_order_items = order_items.collect { |attrs| have_attributes(attrs) }
+
+      expect(OrderItem.all).to match_array(expected_order_items)
+    end
+
     context 'when the file contains users that have already been imported' do
       let(:import_with_imported_users) { create(:import) }
 
       let(:users) do
         [
-          { external_id: 99, name: 'Junita Last' },
-          { external_id: 77, name: 'Mrs. Stephen Trantow' },
-          { external_id: 19, name: 'Teresa Brakus' },
-          { external_id: 52, name: 'Britt Armstrong' }
+          { id: 99, name: 'Junita Last' },
+          { id: 77, name: 'Mrs. Stephen Trantow' },
+          { id: 19, name: 'Teresa Brakus' },
+          { id: 52, name: 'Britt Armstrong' }
         ]
       end
 
@@ -101,10 +120,10 @@ RSpec.describe ImportJob, type: :job do
 
       let(:products) do
         [
-          { external_id: 4, price_cents: 97_024 },
-          { external_id: 2, price_cents: 73_857 },
-          { external_id: 3, price_cents: 184_386 },
-          { external_id: 1, price_cents: 121_307 }
+          { id: 4, price_cents: 97_024 },
+          { id: 2, price_cents: 73_857 },
+          { id: 3, price_cents: 184_386 },
+          { id: 1, price_cents: 121_307 }
         ]
       end
 
@@ -131,10 +150,10 @@ RSpec.describe ImportJob, type: :job do
 
       let(:orders) do
         [
-          { external_id: 1068, user_external_id: 99, date: Date.new(2021, 11, 26) },
-          { external_id: 840, user_external_id: 77, date: Date.new(2021, 5, 21) },
-          { external_id: 192, user_external_id: 19, date: Date.new(2021, 3, 25) },
-          { external_id: 559, user_external_id: 52, date: Date.new(2021, 9, 2) }
+          { id: 1068, user_id: 99, date: Date.new(2021, 11, 26) },
+          { id: 840, user_id: 77, date: Date.new(2021, 5, 21) },
+          { id: 192, user_id: 19, date: Date.new(2021, 3, 25) },
+          { id: 559, user_id: 52, date: Date.new(2021, 9, 2) }
         ]
       end
 
@@ -156,23 +175,62 @@ RSpec.describe ImportJob, type: :job do
       end
     end
 
+    context 'when the file contains order items that have already been imported' do
+      let(:import_with_imported_order_items) { create(:import) }
+
+      let(:order_items) do
+        [
+          { order_id: 1068, product_id: 4, price_cents: 87_024 },
+          { order_id: 1068, product_id: 2, price_cents: 73_857 },
+          { order_id: 1068, product_id: 2, price_cents: 73_957 },
+          { order_id: 840, product_id: 2, price_cents: 73_857 },
+          { order_id: 192, product_id: 3, price_cents: 184_386 },
+          { order_id: 559, product_id: 1, price_cents: 121_307 },
+          { order_id: 1068, product_id: 4, price_cents: 97_024 }
+        ]
+      end
+
+      before do
+        import_with_imported_order_items.file.attach(
+          io: File.open(Rails.root.join('spec/fixtures/files/data_2.txt')),
+          filename: 'data_2.txt'
+        )
+
+        job.perform(import.id)
+      end
+
+      it 'updates the existing order items' do
+        job.perform(import_with_imported_order_items.id)
+
+        expected_order_items = order_items.collect { |attrs| have_attributes(attrs) }
+
+        expect(OrderItem.all).to match_array(expected_order_items)
+      end
+    end
+
     context "when the import doesn't exist" do
       it "doesn't import any user" do
         expect do
           job.perform(0)
-        end.to_not change(User, :count)
+        end.not_to change(User, :count)
       end
 
       it "doesn't import any product" do
         expect do
           job.perform(0)
-        end.to_not change(Product, :count)
+        end.not_to change(Product, :count)
       end
 
       it "doesn't import any order" do
         expect do
           job.perform(0)
-        end.to_not change(Order, :count)
+        end.not_to change(Order, :count)
+      end
+
+      it "doesn't import any order item" do
+        expect do
+          job.perform(0)
+        end.not_to change(OrderItem, :count)
       end
     end
 
@@ -182,19 +240,25 @@ RSpec.describe ImportJob, type: :job do
       it "doesn't import any user" do
         expect do
           job.perform(0)
-        end.to_not change(User, :count)
+        end.not_to change(User, :count)
       end
 
       it "doesn't import any product" do
         expect do
           job.perform(0)
-        end.to_not change(Product, :count)
+        end.not_to change(Product, :count)
       end
 
       it "doesn't import any order" do
         expect do
           job.perform(0)
-        end.to_not change(Order, :count)
+        end.not_to change(Order, :count)
+      end
+
+      it "doesn't import any order item" do
+        expect do
+          job.perform(0)
+        end.not_to change(OrderItem, :count)
       end
     end
   end
