@@ -40,7 +40,7 @@ RSpec.describe 'Api::V1::Products', type: :request do
 
         expected_products = products
                             .sort_by(&:id)
-                            .first(10)
+                            .first(per_page)
                             .collect { |p| { 'product_id' => p.id, 'value' => (p.price_cents / 100.0).to_s } }
 
         expect(response.parsed_body).to match_array(expected_products)
