@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Orders::Reader do
-  describe '.read' do
+  describe '#read' do
     subject(:reader) { described_class.new }
 
     let(:file) { Rails.root.join('spec/fixtures/files/data_1.txt') }
