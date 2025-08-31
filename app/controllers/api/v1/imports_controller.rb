@@ -13,12 +13,14 @@ class Api::V1::ImportsController < ApplicationController
       return render json: { error: I18n.t('imports.errors.invalid_per_page') }, status: :bad_request
     end
 
-    imports = Import
-              .order(:created_at)
-              .page(page)
-              .per(params[:per_page])
-              .pluck(Arel.sql('id AS import_id'), :status)
-              .collect { |import_id, status| { import_id:, status: } }
+    imports = ActiveRecord::Base.connected_to(role: :reading) do
+      Import
+        .order(:created_at)
+        .page(page)
+        .per(params[:per_page])
+        .pluck(Arel.sql('id AS import_id'), :status)
+        .collect { |import_id, status| { import_id:, status: } }
+    end
 
     render json: imports
   end

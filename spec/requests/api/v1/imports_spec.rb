@@ -3,18 +3,16 @@
 require 'rails_helper'
 
 RSpec.describe 'Api::V1::Imports', type: :request do
-  describe 'GET /index', :f do
-    before { create_list(:import, 50) }
+  describe 'GET /index' do
+    let!(:imports) { create_list(:import, 50) }
 
     it 'returns a list of imports' do
       get '/api/v1/imports'
 
-      expected_imports = Import
-                         .order(:created_at)
-                         .page(1)
-                         .per(25)
-                         .pluck(Arel.sql('id AS import_id'), :status)
-                         .collect { |import_id, status| { 'import_id' => import_id, 'status' => status } }
+      expected_imports = imports
+                         .sort_by(&:created_at)
+                         .first(25)
+                         .collect { |i| { 'import_id' => i.id, 'status' => i.status } }
 
       expect(response.parsed_body).to match_array(expected_imports)
     end
@@ -25,12 +23,10 @@ RSpec.describe 'Api::V1::Imports', type: :request do
       it 'returns a list of imports for the specified page' do
         get '/api/v1/imports', params: { page: }
 
-        expected_imports = Import
-                           .order(:created_at)
-                           .page(page)
-                           .per(25)
-                           .pluck(Arel.sql('id AS import_id'), :status)
-                           .collect { |import_id, status| { 'import_id' => import_id, 'status' => status } }
+        expected_imports = imports
+                           .sort_by(&:created_at)
+                           .slice(25, 25)
+                           .collect { |i| { 'import_id' => i.id, 'status' => i.status } }
 
         expect(response.parsed_body).to match_array(expected_imports)
       end
@@ -42,12 +38,10 @@ RSpec.describe 'Api::V1::Imports', type: :request do
       it 'returns a list of imports with the specified per_page' do
         get '/api/v1/imports', params: { per_page: }
 
-        expected_imports = Import
-                           .order(:created_at)
-                           .page(1)
-                           .per(per_page)
-                           .pluck(Arel.sql('id AS import_id'), :status)
-                           .collect { |import_id, status| { 'import_id' => import_id, 'status' => status } }
+        expected_imports = imports
+                           .sort_by(&:created_at)
+                           .first(10)
+                           .collect { |i| { 'import_id' => i.id, 'status' => i.status } }
 
         expect(response.parsed_body).to match_array(expected_imports)
       end
