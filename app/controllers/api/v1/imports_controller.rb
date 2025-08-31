@@ -17,11 +17,11 @@ module Api
 
         imports = ActiveRecord::Base.connected_to(role: :reading) do
           Import
+            .select('id AS import_id', 'status')
             .order(:created_at)
             .page(page)
-            .per(params[:per_page])
-            .pluck(Arel.sql('id AS import_id'), :status)
-            .collect { |import_id, status| { import_id:, status: } }
+            .per(per_page)
+            .collect { |i| { import_id: i.import_id, status: i.status } }
         end
 
         render json: imports

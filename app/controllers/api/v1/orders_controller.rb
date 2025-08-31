@@ -26,8 +26,8 @@ module Api
             .joins(:order_items)
             .group('orders.id', 'orders.date')
             .order(:id)
-            .page(params[:page])
-            .per(params[:per_page])
+            .page(page)
+            .per(per_page)
             .collect { |o| { order_id: o.order_id, date: o.date, total: o.total, products: o.products } }
         end
 

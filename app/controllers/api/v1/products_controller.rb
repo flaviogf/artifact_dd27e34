@@ -16,11 +16,15 @@ module Api
         end
 
         products = ActiveRecord::Base.connected_to(role: :reading) do
-          Product.order(:id)
-                 .page(page)
-                 .per(per_page)
-                 .pluck(Arel.sql('id AS product_id'), Arel.sql('price_cents / 100.0 AS value'))
-                 .collect { |product_id, value| { product_id:, value: } }
+          Product
+            .select(
+              'id AS product_id',
+              "to_char(price_cents / 100.0, 'FM999999999.00') AS value"
+            )
+            .order(:id)
+            .page(page)
+            .per(per_page)
+            .collect { |p| { product_id: p.product_id, value: p.value } }
         end
 
         render json: products
