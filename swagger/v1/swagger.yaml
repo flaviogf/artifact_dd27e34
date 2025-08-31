@@ -248,6 +248,15 @@ paths:
                       type: integer
                     name:
                       type: string
+                    orders:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          order_id:
+                            type: integer
+                          date:
+                            type: string
         '400':
           description: Bad Request
           content:

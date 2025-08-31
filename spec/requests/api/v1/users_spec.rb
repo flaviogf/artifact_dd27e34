@@ -4,12 +4,16 @@ require 'rails_helper'
 
 RSpec.describe 'Api::V1::Users', type: :request do
   describe 'GET /index' do
-    let!(:users) { create_list(:user, 50) }
+    let!(:orders) do
+      users.flat_map { |user| create_list(:order, 2, user:) }
+    end
+
+    let(:users) { create_list(:user, 50) }
 
     it 'returns a list of users' do
       get '/api/v1/users'
 
-      expected_users = build_expected_users(users).first(25)
+      expected_users = build_expected_users(users, orders).first(25)
 
       expect(response.parsed_body).to match_array(expected_users)
     end
@@ -20,7 +24,7 @@ RSpec.describe 'Api::V1::Users', type: :request do
       it 'returns a list of users for the specified page' do
         get '/api/v1/users', params: { page: }
 
-        expected_users = build_expected_users(users).slice(25, 25)
+        expected_users = build_expected_users(users, orders).slice(25, 25)
 
         expect(response.parsed_body).to match_array(expected_users)
       end
@@ -32,7 +36,7 @@ RSpec.describe 'Api::V1::Users', type: :request do
       it 'returns a list of users with the specified per_page' do
         get '/api/v1/users', params: { per_page: }
 
-        expected_users = build_expected_users(users).first(per_page)
+        expected_users = build_expected_users(users, orders).first(per_page)
 
         expect(response.parsed_body).to match_array(expected_users)
       end
@@ -68,10 +72,18 @@ RSpec.describe 'Api::V1::Users', type: :request do
 
     private
 
-    def build_expected_users(users)
+    def build_expected_users(users, orders)
+      grouped_orders = orders.group_by(&:user_id)
+
       users
         .sort_by(&:id)
-        .collect { |user| { 'user_id' => user.id, 'name' => user.name } }
+        .collect do |user|
+          orders = grouped_orders[user.id].collect do |order|
+            { 'order_id' => order.id, 'date' => order.date.to_s, 'total' => '0.00', 'products' => match_array([]) }
+          end
+
+          { 'user_id' => user.id, 'name' => user.name, 'orders' => match_array(orders) }
+        end
     end
   end
 end
