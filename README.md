@@ -21,6 +21,8 @@ Receber um arquivo desnormalizado via **API REST**, processá-lo e disponibiliza
 - **Cobertura de testes**: [SimpleCov](https://github.com/simplecov-ruby/simplecov)
 - **Documentação da API**: [Rswag](https://github.com/rswag/rswag)
 - **Gerenciamento de dependências**: [Bundler](https://bundler.io/)
+- **Containerização**: [Docker 28.3.3](https://www.docker.com/)
+- **Orquestração de containers**: [Docker Compose 2.39.2](https://docs.docker.com/compose/)
 
 ## ⚙️ Como Rodar o Projeto
 
