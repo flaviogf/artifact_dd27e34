@@ -35,6 +35,17 @@ RSpec.describe ImportJob, type: :job do
       ]
     end
 
+    let(:order_items) do
+      [
+        { order_id: 1068, product_id: 4, price_cents: 87_024 },
+        { order_id: 1068, product_id: 2, price_cents: 73_857 },
+        { order_id: 1068, product_id: 2, price_cents: 73_957 },
+        { order_id: 840, product_id: 2, price_cents: 73_857 },
+        { order_id: 192, product_id: 3, price_cents: 184_386 },
+        { order_id: 559, product_id: 1, price_cents: 121_307 }
+      ]
+    end
+
     before do
       import.file.attach(
         io: File.open(Rails.root.join('spec/fixtures/files/data_1.txt')),
@@ -64,6 +75,14 @@ RSpec.describe ImportJob, type: :job do
       expected_orders = orders.collect { |attrs| have_attributes(attrs) }
 
       expect(Order.all).to match_array(expected_orders)
+    end
+
+    it 'imports the order items' do
+      job.perform(import.id)
+
+      expected_order_items = order_items.collect { |attrs| have_attributes(attrs) }
+
+      expect(OrderItem.all).to match_array(expected_order_items)
     end
 
     context 'when the file contains users that have already been imported' do
@@ -156,23 +175,62 @@ RSpec.describe ImportJob, type: :job do
       end
     end
 
+    context 'when the file contains order items that have already been imported' do
+      let(:import_with_imported_order_items) { create(:import) }
+
+      let(:order_items) do
+        [
+          { order_id: 1068, product_id: 4, price_cents: 87_024 },
+          { order_id: 1068, product_id: 2, price_cents: 73_857 },
+          { order_id: 1068, product_id: 2, price_cents: 73_957 },
+          { order_id: 840, product_id: 2, price_cents: 73_857 },
+          { order_id: 192, product_id: 3, price_cents: 184_386 },
+          { order_id: 559, product_id: 1, price_cents: 121_307 },
+          { order_id: 1068, product_id: 4, price_cents: 97_024 }
+        ]
+      end
+
+      before do
+        import_with_imported_order_items.file.attach(
+          io: File.open(Rails.root.join('spec/fixtures/files/data_2.txt')),
+          filename: 'data_2.txt'
+        )
+
+        job.perform(import.id)
+      end
+
+      it 'updates the existing order items' do
+        job.perform(import_with_imported_order_items.id)
+
+        expected_order_items = order_items.collect { |attrs| have_attributes(attrs) }
+
+        expect(OrderItem.all).to match_array(expected_order_items)
+      end
+    end
+
     context "when the import doesn't exist" do
       it "doesn't import any user" do
         expect do
           job.perform(0)
-        end.to_not change(User, :count)
+        end.not_to change(User, :count)
       end
 
       it "doesn't import any product" do
         expect do
           job.perform(0)
-        end.to_not change(Product, :count)
+        end.not_to change(Product, :count)
       end
 
       it "doesn't import any order" do
         expect do
           job.perform(0)
-        end.to_not change(Order, :count)
+        end.not_to change(Order, :count)
+      end
+
+      it "doesn't import any order item" do
+        expect do
+          job.perform(0)
+        end.not_to change(OrderItem, :count)
       end
     end
 
@@ -182,19 +240,25 @@ RSpec.describe ImportJob, type: :job do
       it "doesn't import any user" do
         expect do
           job.perform(0)
-        end.to_not change(User, :count)
+        end.not_to change(User, :count)
       end
 
       it "doesn't import any product" do
         expect do
           job.perform(0)
-        end.to_not change(Product, :count)
+        end.not_to change(Product, :count)
       end
 
       it "doesn't import any order" do
         expect do
           job.perform(0)
-        end.to_not change(Order, :count)
+        end.not_to change(Order, :count)
+      end
+
+      it "doesn't import any order item" do
+        expect do
+          job.perform(0)
+        end.not_to change(OrderItem, :count)
       end
     end
   end
