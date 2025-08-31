@@ -36,4 +36,4 @@ en:
   products:
     errors:
       invalid_page: Invalid page
-      invalid_per_page: Invalid per page
+      invalid_per_page: Invalid per_page

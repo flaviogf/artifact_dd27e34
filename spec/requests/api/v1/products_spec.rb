@@ -77,7 +77,7 @@ RSpec.describe 'Api::V1::Products', type: :request do
       it 'returns an error message' do
         get '/api/v1/products', params: { per_page: 'invalid' }
 
-        expect(response.parsed_body['error']).to eq('Invalid per page')
+        expect(response.parsed_body['error']).to eq('Invalid per_page')
       end
     end
   end
