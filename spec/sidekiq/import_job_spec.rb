@@ -85,6 +85,12 @@ RSpec.describe ImportJob, type: :job do
       expect(OrderItem.all).to match_array(expected_order_items)
     end
 
+    it 'updates the import status to completed' do
+      expect do
+        job.perform(import.id)
+      end.to change { import.reload.status }.from('pending').to('completed')
+    end
+
     context 'when the file contains users that have already been imported' do
       let(:import_with_imported_users) { create(:import) }
 
@@ -259,6 +265,17 @@ RSpec.describe ImportJob, type: :job do
         expect do
           job.perform(0)
         end.not_to change(OrderItem, :count)
+      end
+    end
+
+    context 'when all retries are exhausted' do
+      it 'updates the import status to failed' do
+        expect do
+          job = { 'args' => [import.id] }
+          ex = StandardError.new('Some error')
+
+          ImportJob.sidekiq_retries_exhausted_block.call(job, ex)
+        end.to change { import.reload.status }.from('pending').to('failed')
       end
     end
   end
