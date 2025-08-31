@@ -21,3 +21,49 @@ Receber um arquivo desnormalizado via **API REST**, processá-lo e disponibiliza
 - **Cobertura de testes**: [SimpleCov](https://github.com/simplecov-ruby/simplecov)
 - **Documentação da API**: [Rswag](https://github.com/rswag/rswag)
 - **Gerenciamento de dependências**: [Bundler](https://bundler.io/)
+
+## ⚙️ Como Rodar o Projeto
+
+### 1. Clone o repositório
+
+```bash
+git clone git@github.com:seu-usuario/artifact_dd27e34.git
+cd artifact_dd27e34
+```
+
+### 2. Faça o build da aplicação
+
+```bash
+docker compose build
+```
+
+### 3. Rode a aplicação
+
+```bash
+docker compose up -d
+```
+
+A aplicação estará disponível em:
+
+http://localhost:3000/api-docs
+
+## 🧪 Rodando os Testes
+
+### 1. Clone o repositório
+
+```bash
+git clone git@github.com:seu-usuario/artifact_dd27e34.git
+cd artifact_dd27e34
+```
+
+### 2. Faça o build da aplicação
+
+```bash
+docker compose build
+```
+
+### 3. Rode o container de teste
+
+```bash
+docker compose run --rm test
+```
