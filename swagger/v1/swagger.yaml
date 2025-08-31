@@ -7,7 +7,9 @@ servers:
 
 tags:
   - name: imports
-    description: Access to order imports
+    description: Access to the imports
+  - name: products
+    description: Access to the products
 
 paths:
   /imports:
@@ -62,3 +64,30 @@ paths:
                 properties:
                   error:
                     type: string
+  /products:
+    get:
+      tags:
+        - products
+      summary: List products
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: per_page
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product_id:
+                    type: integer
+                  value:
+                    type: number
+                    format: double

@@ -33,3 +33,7 @@ en:
       missing_file: File is required
       invalid_file: Invalid file
       invalid_file_type: Invalid file type
+  products:
+    errors:
+      invalid_page: Invalid page
+      invalid_per_page: Invalid per page
