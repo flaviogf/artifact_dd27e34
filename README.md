@@ -89,3 +89,6 @@ docker compose run --rm test
 
 - 🗄️ **Suporte a Bancos de Réplicas**:  
   A aplicação está preparada para trabalhar com **[bancos de dados primário e réplicas](https://github.com/flaviogf/artifact_dd27e34/blob/main/app/controllers/api/v1/products_controller.rb#L18)**, permitindo consultas distribuídas e maior escalabilidade.
+  
+- ✅ **[100% de Coverage](https://coveralls.io/github/flaviogf/artifact_dd27e34?branch=main)**:  
+  Todos os principais fluxos da aplicação são cobertos por **testes automatizados**, garantindo confiabilidade e segurança ao modificar ou adicionar novas funcionalidades.
