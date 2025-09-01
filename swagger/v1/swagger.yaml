@@ -245,6 +245,10 @@ paths:
           schema:
             type: integer
         - in: query
+          name: order_id
+          schema:
+            type: integer
+        - in: query
           name: order_start_date
           schema:
             type: string

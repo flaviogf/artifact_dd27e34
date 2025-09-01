@@ -80,6 +80,18 @@ RSpec.describe 'Api::V1::Users', type: :request do
       end
     end
 
+    context 'with order_id' do
+      let(:order) { users[0].orders[0] }
+
+      it 'returns a list of users with the specified order_id' do
+        get '/api/v1/users', params: { order_id: order.id }
+
+        expected_users = build_expected_users([users[0]], [order])
+
+        expect(response.parsed_body).to match_array(expected_users)
+      end
+    end
+
     context 'when order_start_date is after order_end_date' do
       let(:order_start_date) { 10.days.from_now.to_date }
 
