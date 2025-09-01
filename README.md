@@ -115,3 +115,18 @@ docker compose run --rm test
   
 - ✅ **[100% de Coverage](https://coveralls.io/github/flaviogf/artifact_dd27e34?branch=main)**:  
   Todos os principais fluxos da aplicação são cobertos por **testes automatizados**, garantindo confiabilidade e segurança ao modificar ou adicionar novas funcionalidades.
+
+## 📝 Futuras Melhorias
+
+- ☁️ **Armazenamento em Serviços de Storage**:  
+  Possibilidade de armazenar os arquivos processados em **serviços de storage** como **Google Cloud Storage** ou **Amazon S3**, utilizando **upload direto** para reduzir a carga sobre o servidor da API.
+
+- 📊 **Otimização da Listagem de Usuários**:  
+  Melhorar a performance do endpoint principal de listagem de usuários por meio de diferentes abordagens, como:  
+  - **Desnormalização parcial** do banco de dados para facilitar a leitura.  
+  - Utilização de um **storage de documentos** com **replicação dos dados do banco relacional** para consultas rápidas.  
+  - **Materialização de views** no banco de dados para **agregar e disponibilizar os dados pré-processados**, reduzindo o custo computacional das consultas.
+
+- 🏗️ **Escalabilidade da Arquitetura**:  
+  Conforme o serviço crescer, **adicionar mais camadas** e separar responsabilidades para facilitar manutenção, escalabilidade e performance.  
+  Nesta versão, por ser um **serviço com escopo bem definido**, optou-se por **manter uma arquitetura mais enxuta** e com **poucas camadas** para simplificar o desenvolvimento e reduzir a complexidade inicial.
