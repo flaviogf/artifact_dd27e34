@@ -79,10 +79,13 @@ docker compose run --rm test
 ## ✨ Destaques da Implementação
 
 - ⚡ **Processamento Assíncrono**:  
-  O processamento do arquivo de importação é feito de forma **assíncrona** para evitar gargalos e manter as chamadas para a API mais rápidas e responsivas.
+  O processamento do arquivo de importação é feito de forma **[assíncrona](https://github.com/flaviogf/artifact_dd27e34/blob/main/app/controllers/api/v1/imports_controller.rb#L46)** para evitar gargalos e manter as chamadas para a API mais rápidas e responsivas.
 
 - 🔄 **Job Idempotente**:  
-  O job responsável por processar os arquivos é **idempotente** — ou seja, é seguro importar o **mesmo arquivo** mais de uma vez, sem risco de **duplicar dados**.
+  O job responsável por processar os arquivos é **[idempotente](https://github.com/flaviogf/artifact_dd27e34/blob/main/app/sidekiq/import_job.rb#L27)** — ou seja, é seguro importar o **mesmo arquivo** mais de uma vez, sem risco de **duplicar dados**.
 
 - 🚀 **Listagem Otimizada**:  
   A consulta de pedidos (`orders`) foi **otimizada** com a criação de **[dois índices](https://github.com/flaviogf/artifact_dd27e34/pull/18)** específicos no banco de dados, garantindo melhor performance mesmo com grandes volumes de dados.
+
+- 🗄️ **Suporte a Bancos de Réplicas**:  
+  A aplicação está preparada para trabalhar com **[bancos de dados primário e réplicas](https://github.com/flaviogf/artifact_dd27e34/blob/main/app/controllers/api/v1/products_controller.rb#L18)**, permitindo consultas distribuídas e maior escalabilidade.
