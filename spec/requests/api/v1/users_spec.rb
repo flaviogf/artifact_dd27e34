@@ -42,6 +42,62 @@ RSpec.describe 'Api::V1::Users', type: :request do
       end
     end
 
+    context 'with order_start_date' do
+      let(:order_start_date) { 10.days.ago.to_date }
+
+      before do
+        users[0...40].each { |user| user.orders.update_all(date: 20.days.ago.to_date) }
+        users[40...].each { |user| user.orders.update_all(date: 5.days.ago.to_date) }
+
+        orders.each(&:reload)
+      end
+
+      it 'returns a list of users with orders from the specified order_start_date' do
+        get '/api/v1/users', params: { order_start_date: }
+
+        expected_users = build_expected_users(users[40...], orders).first(25)
+
+        expect(response.parsed_body).to match_array(expected_users)
+      end
+    end
+
+    context 'with order_end_date' do
+      let(:order_end_date) { Time.current.to_date }
+
+      before do
+        users[0...40].each { |user| user.orders.update_all(date: 20.days.from_now.to_date) }
+        users[40...].each { |user| user.orders.update_all(date: 5.days.ago.to_date) }
+
+        orders.each(&:reload)
+      end
+
+      it 'returns a list of users with orders up to the specified order_end_date' do
+        get '/api/v1/users', params: { order_end_date: }
+
+        expected_users = build_expected_users(users[40...], orders).first(25)
+
+        expect(response.parsed_body).to match_array(expected_users)
+      end
+    end
+
+    context 'when order_start_date is after order_end_date' do
+      let(:order_start_date) { 10.days.from_now.to_date }
+
+      let(:order_end_date) { Time.current.to_date }
+
+      it 'returns a 400 status code' do
+        get '/api/v1/users', params: { order_start_date:, order_end_date: }
+
+        expect(response).to have_http_status(:bad_request)
+      end
+
+      it 'returns an error message' do
+        get '/api/v1/users', params: { order_start_date:, order_end_date: }
+
+        expect(response.parsed_body['error']).to eq('Invalid date range')
+      end
+    end
+
     context 'with invalid page' do
       it 'returns a 400 status code' do
         get '/api/v1/users', params: { page: 'invalid' }
