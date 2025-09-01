@@ -12,6 +12,21 @@ Receber um arquivo desnormalizado via **API REST**, processá-lo e disponibiliza
 
 ---
 
+## 📂 **Formato do Arquivo de Entrada**
+
+O arquivo legado é **fixo** e **desnormalizado**. Cada linha representa uma parte de um pedido, com as colunas padronizadas por tamanho:
+
+| Campo           | Tamanho | Tipo     | Observação                |
+|-----------------|---------|----------|---------------------------|
+| id_usuario      | 10      | Numérico | Preenchido com `0` à esquerda |
+| nome            | 45      | Texto    | Preenchido com espaços à esquerda |
+| id_pedido       | 10      | Numérico | Preenchido com `0` à esquerda |
+| id_produto      | 10      | Numérico | Preenchido com `0` à esquerda |
+| valor_produto   | 12      | Decimal  | Ex.: `000000012399` → `123.99` |
+| data_compra     | 8       | Numérico | Formato `yyyymmdd` |
+
+---
+
 ## 🛠 **Tecnologias Utilizadas**
 
 - **Linguagem**: [Ruby 3.4.5](https://www.ruby-lang.org/)
@@ -24,9 +39,13 @@ Receber um arquivo desnormalizado via **API REST**, processá-lo e disponibiliza
 - **Containerização**: [Docker 28.3.3](https://www.docker.com/)
 - **Orquestração de containers**: [Docker Compose 2.39.2](https://docs.docker.com/compose/)
 
+---
+
 ## 🎬 Demonstração da API
 
 ![API funcionando](https://github.com/user-attachments/assets/c041c8f9-1584-40ed-82c6-fb2e62f42a05)
+
+---
 
 ## ⚙️ Como Rodar o Projeto
 
@@ -55,6 +74,8 @@ http://localhost:3000/api-docs
 
 http://localhost:3000/sidekiq
 
+---
+
 ## 🧪 Rodando os Testes
 
 ### 1. Clone o repositório
@@ -75,6 +96,8 @@ docker compose build
 ```bash
 docker compose run --rm test
 ```
+
+---
 
 ## ✨ Destaques da Implementação
 
