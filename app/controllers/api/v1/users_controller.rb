@@ -6,6 +6,7 @@ module Api
       def index
         page = params[:page]
         per_page = params[:per_page]
+        order_id = params[:order_id]
         order_start_date = parse_date(params[:order_start_date], Time.at(0).to_date)
         order_end_date = parse_date(params[:order_end_date], Time.zone.today)
 
@@ -21,7 +22,7 @@ module Api
           return render json: { error: I18n.t('users.errors.invalid_date_range') }, status: :bad_request
         end
 
-        users = fetch_users(page, per_page, order_start_date, order_end_date)
+        users = fetch_users(page, per_page, order_id, order_start_date, order_end_date)
 
         render json: users
       end
@@ -34,7 +35,7 @@ module Api
         default
       end
 
-      def fetch_users(page, per_page, order_start_date, order_end_date)
+      def fetch_users(page, per_page, order_id, order_start_date, order_end_date)
         ActiveRecord::Base.connected_to(role: :reading) do
           query = User
                   .select(
@@ -88,6 +89,7 @@ module Api
                   .page(page)
                   .per(per_page)
 
+          query = query.where('orders.id = ?', order_id.to_i) if order_id.present?
           query = query.where('orders.date >= ?', order_start_date) if order_start_date.present?
           query = query.where('orders.date <= ?', order_end_date) if order_end_date.present?
 
