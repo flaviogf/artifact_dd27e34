@@ -281,6 +281,17 @@ paths:
                             type: integer
                           date:
                             type: string
+                          total:
+                            type: string
+                          products:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                product_id:
+                                  type: integer
+                                value:
+                                  type: string
         '400':
           description: Bad Request
           content:
