@@ -26,7 +26,7 @@ Receber um arquivo desnormalizado via **API REST**, processá-lo e disponibiliza
 
 ## 🎬 Demonstração da API
 
-![API funcionando](https://github.com/user-attachments/assets/09896560-bbd7-4b74-b3ca-c29b7de727ce)
+![API funcionando](https://github.com/user-attachments/assets/c041c8f9-1584-40ed-82c6-fb2e62f42a05)
 
 ## ⚙️ Como Rodar o Projeto
 
