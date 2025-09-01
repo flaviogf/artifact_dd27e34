@@ -59,10 +59,10 @@ module Api
                   .joins(:order_items)
                   .group('orders.id', 'orders.date')
                   .order(:id)
-                  .page(page).per(per_page)
+                  .page(page)
+                  .per(per_page)
 
           query = query.where('orders.date >= ?', start_date) if start_date.present?
-
           query = query.where('orders.date <= ?', end_date) if end_date.present?
 
           query.as_json(except: %i[id])

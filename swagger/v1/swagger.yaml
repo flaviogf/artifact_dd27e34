@@ -244,6 +244,16 @@ paths:
           name: per_page
           schema:
             type: integer
+        - in: query
+          name: order_start_date
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: order_end_date
+          schema:
+            type: string
+            format: date
       responses:
         '200':
           description: OK
