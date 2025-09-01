@@ -43,7 +43,7 @@ O arquivo legado é **fixo** e **desnormalizado**. Cada linha representa uma par
 
 ## 🎬 Demonstração da API
 
-![API funcionando](https://github.com/user-attachments/assets/c041c8f9-1584-40ed-82c6-fb2e62f42a05)
+![API funcionando](docs/demo.gif)
 
 ---
 
