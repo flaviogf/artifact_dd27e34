@@ -35,7 +35,7 @@ gem 'kaminari', '~> 1.2'
 gem 'ostruct', '~> 0.6.3'
 gem 'rswag-api', '~> 2.16.0'
 gem 'rswag-ui', '~> 2.16.0'
-gem 'sidekiq', '~> 8.0.0'
+gem 'sidekiq', '~> 8.0.8'
 
 group :test do
   gem 'faker', '~> 3.5.0'
