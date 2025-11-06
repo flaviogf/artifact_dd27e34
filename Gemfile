@@ -33,7 +33,7 @@ gem 'thruster', require: false
 
 gem 'kaminari', '~> 1.2'
 gem 'ostruct', '~> 0.6.3'
-gem 'rswag-api', '~> 2.16.0'
+gem 'rswag-api', '~> 2.17.0'
 gem 'rswag-ui', '~> 2.16.0'
 gem 'sidekiq', '~> 8.0.0'
 
